@@ -1,0 +1,23 @@
+<input
+  type="text"
+  class="form-control"
+  [(ngModel)]="newTodo"
+  (keyup.enter)="handleCreateTodoItem()"
+  placeholder="Add a new todo"
+>
+
+<h4>Ongoing todo list</h4>
+<small class="text-muted" *ngIf="todoList.length === 0">nothing</small>
+<ul>
+  <li *ngFor="let todo of todoList; let index = index" class="todo-item">
+    <div (click)="finishTodoItem(index)">{{ todo }}</div>
+  </li>
+</ul>
+
+<h4>Finished</h4>
+<small class="text-muted" *ngIf="finishedTodos.length === 0">nothing</small>
+<ul>
+  <li *ngFor="let todo of finishedTodos; let index = index" class="todo-item">
+    {{ todo }}
+  </li>
+</ul>
