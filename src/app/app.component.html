@@ -1,16 +1,12 @@
 <div class="container main">
-  <nav class="navbar navbar-default">
-    <div class="navbar-header">
-      <a class="navbar-brand" routerLink="#">Todo APP</a>
-    </div>
-    <div class="container-fluid">
-      <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/todo-list"> Todo List </a> </li>
-        <li routerLinkActive="active"><a routerLink="/statistics"> Statistics </a> </li>
-      </ul>
-    </div>
-  </nav>
-
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" routerLink="/todo-list">Todo List</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/statistics">Statistics</a>
+    </li>
+  </ul>
   <div class="jumbotron">
     <router-outlet></router-outlet>
   </div>
