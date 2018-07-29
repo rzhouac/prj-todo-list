@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { HttpClientModule } from '@angular/common/http';
+import { TodoService } from './services/todo.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'todo-list', pathMatch: 'full'},
@@ -23,9 +25,12 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
   ],
-  providers: [],
+  providers: [
+    TodoService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
