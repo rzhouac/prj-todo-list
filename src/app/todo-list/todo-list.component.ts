@@ -16,12 +16,16 @@ export class TodoListComponent implements OnInit {
   constructor(private todoService: TodoService) { }
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this.todoService.getTodoList()
       .subscribe((data: Array<string>) => this.todoList = data );
   }
 
   handleCreateTodoItem() {
-    this.todoList.push(this.newTodo);
+    this.todoService.addTodo(this.newTodo).subscribe(() => this.loadData());
     this.newTodo = '';
   }
 
