@@ -20,4 +20,11 @@ export class TodoService {
   addTodo(todo) {
     return this.http.post('/api/todo-list/add', JSON.stringify({ title: todo}), this.httpOptions);
   }
+
+  updateTodo(index, formValue) {
+    return this.http.put('/api/todo-list/update', JSON.stringify({
+      index,
+      ...formValue,
+    }), this.httpOptions);
+  }
 }

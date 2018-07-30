@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../services/todo.service';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-todo-list',
@@ -12,6 +13,13 @@ export class TodoListComponent implements OnInit {
   todoList: Array<string> = [];
 
   finishedTodos: Array<string> = [];
+
+  title: FormControl = new FormControl('', this.forbiddenNullValidator());
+  currentIndex;
+
+  form: FormGroup = new FormGroup({
+    title: this.title,
+  });
 
   constructor(private todoService: TodoService) { }
 
@@ -30,8 +38,20 @@ export class TodoListComponent implements OnInit {
   }
 
   finishTodoItem(index) {
-    this.finishedTodos.push(this.todoList[index]);
-    this.todoList.splice(index, 1);
+    this.title.setValue(this.todoList[index]);
+    this.currentIndex = index;
   }
 
+  forbiddenNullValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const forbidden = control.value === '';
+      return forbidden ? { isEmpty : true } : null;
+    };
+  }
+
+  save() {
+    this.todoService.updateTodo(this.currentIndex, this.form.value).subscribe(() => {
+      this.loadData();
+    });
+  }
 }
