@@ -22,11 +22,18 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.initSubscribe();
   }
 
   loadData() {
     this.todoService.getTodoList()
       .subscribe((data: Array<string>) => this.todoList = data );
+  }
+
+  initSubscribe() {
+    this.title.valueChanges.subscribe(() => {
+      this.title.markAsTouched();
+    });
   }
 
   handleCreateTodoItem() {
