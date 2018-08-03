@@ -33,8 +33,10 @@ export class TodoListComponent implements OnInit {
   }
 
   handleCreateTodoItem() {
-    this.todoService.addTodo(this.newTodo).subscribe(() => this.loadData());
-    this.newTodo = '';
+    if (this.newTodo) {
+      this.todoService.addTodo(this.newTodo).subscribe(() => this.loadData());
+      this.newTodo = '';
+    }
   }
 
   finishTodoItem(index) {
