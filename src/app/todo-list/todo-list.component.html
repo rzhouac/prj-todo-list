@@ -3,38 +3,46 @@
   class="form-control"
   [(ngModel)]="newTodo"
   (keyup.enter)="handleCreateTodoItem()"
-  placeholder="Add a new todo"
+  placeholder="Add Todo"
 >
 
-<h4>Ongoing todo list</h4>
-<small class="text-muted" *ngIf="todoList.length === 0">nothing</small>
-<ul>
-  <li *ngFor="let todo of todoList; let index = index" class="todo-item">
-    <div data-toggle="modal" data-target="#myModal" (click)="finishTodoItem(index)">{{ todo }}</div>
-  </li>
-</ul>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">编辑</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+<div class="list">
+  <div class="card todo-list border-primary">
+    <div class="card-header bg-primary text-white">Todo List</div>
+    <div class="card-body text-primary">
+      <div *ngFor="let todo of todoList; let index = index" class="todo-item">
+        <i class="fa fa-circle-thin" (click)="finishTodoItem(index)"></i>
+        <span data-toggle="modal" data-target="#myModal" (click)="editTodo(index)">{{ todo }}</span>
       </div>
-      <div class="modal-body">
-        <input type="text" class="form-control" [formControl]="title">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" id="close">关闭</button>
-        <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="save()">保存</button>
+    </div>
+  </div>
+  <div class="card todo-list border-success">
+    <div class="card-header bg-success text-white">Finished List</div>
+    <div class="card-body text-success">
+      <div *ngFor="let todo of finishedTodos;" class="todo-item">
+        <i class="fa fa-check-circle"></i>
+        <span>{{ todo }}</span>
       </div>
     </div>
   </div>
 </div>
 
-<h4>Finished</h4>
-<small class="text-muted" *ngIf="finishedTodos.length === 0">nothing</small>
-<ul>
-  <li *ngFor="let todo of finishedTodos; let index = index" class="todo-item">
-    {{ todo }}
-  </li>
-</ul>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">编辑</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" [formControl]="title">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="onSave()">保存</button>
+      </div>
+    </div>
+  </div>
+</div>

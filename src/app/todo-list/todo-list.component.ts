@@ -5,18 +5,15 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/f
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css']
+  styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
   newTodo: string;
-
   todoList: Array<string> = [];
-
   finishedTodos: Array<string> = [];
-
-  title: FormControl = new FormControl('', this.forbiddenNullValidator());
   currentIndex;
 
+  title: FormControl = new FormControl('', this.forbiddenNullValidator());
   form: FormGroup = new FormGroup({
     title: this.title,
   });
@@ -39,9 +36,14 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  finishTodoItem(index) {
+  editTodo(index) {
     this.title.setValue(this.todoList[index]);
     this.currentIndex = index;
+  }
+
+  finishTodoItem(index) {
+    this.finishedTodos.push(this.todoList[index]);
+    this.todoList.splice(index, 1);
   }
 
   forbiddenNullValidator(): ValidatorFn {
@@ -51,7 +53,7 @@ export class TodoListComponent implements OnInit {
     };
   }
 
-  save() {
+  onSave() {
     this.todoService.updateTodo(this.currentIndex, this.form.value).subscribe(() => {
       this.loadData();
     });
