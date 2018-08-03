@@ -4,8 +4,8 @@
   box-shadow: none;
 }
 
-.form-control.ng-touched.ng-invalid,
-.form-control.ng-touched.ng-invalid:focus
+.form-control.ng-dirty.ng-invalid,
+.form-control.ng-dirty.ng-invalid:focus
 {
    border: 1px solid #E84522;
 }
