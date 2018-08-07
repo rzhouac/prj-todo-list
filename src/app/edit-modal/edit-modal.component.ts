@@ -1,6 +1,8 @@
 import {
   Component,
   EventEmitter,
+  forwardRef,
+  Inject,
   Input,
   OnChanges,
   OnInit,
@@ -9,6 +11,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {TodoListComponent} from '../todo-list/todo-list.component';
 
 @Component({
   selector: 'app-edit-modal',
@@ -26,7 +29,7 @@ export class EditModalComponent implements OnInit, OnChanges {
     status: new FormControl(''),
   });
 
-  constructor() {
+  constructor(@Inject(forwardRef(() => TodoListComponent)) private parentComponent: TodoListComponent) {
   }
 
   ngOnInit() {
@@ -39,7 +42,8 @@ export class EditModalComponent implements OnInit, OnChanges {
 
   forbiddenNullValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const forbidden = control.value === '';
+      const forbidden = control.value === '' ||
+        (this.parentComponent && this.parentComponent.todoList.find(todo => todo.content === control.value));
       return forbidden ? {isEmpty: true} : null;
     };
   }

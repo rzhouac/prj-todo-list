@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TodoService} from '../services/todo.service';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {STATUS} from '../constants/status';
 
 export interface ITodo {
