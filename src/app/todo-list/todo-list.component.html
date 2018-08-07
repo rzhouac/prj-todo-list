@@ -10,10 +10,12 @@
   <div class="card todo-list border-primary">
     <div class="card-header bg-primary text-white">Todo List</div>
     <div class="card-body text-primary">
-      <div *ngFor="let todo of todoList" class="todo-item">
-        <i class="fa fa-circle-thin" (click)="finishTodoItem(todo)"></i>
-        <span data-toggle="modal" data-target="#myModal" (click)="editTodo(todo)">{{ todo.content }}</span>
-      </div>
+      <app-todo
+        *ngFor="let todo of todoList"
+        [todo]="todo"
+        (updateStatus)="finishTodoItem(todo)"
+        (editTodo)="editTodo(todo)">
+      </app-todo>
     </div>
   </div>
   <div class="card todo-list border-success">
