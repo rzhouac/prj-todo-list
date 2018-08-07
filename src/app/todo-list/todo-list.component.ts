@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TodoService} from '../services/todo.service';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {STATUS} from '../constants/status';
@@ -14,7 +14,7 @@ export interface ITodo {
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss']
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, AfterViewInit {
   newTodo: string;
   todoList: Array<ITodo> = [];
   finishedTodos: Array<ITodo> = [];
@@ -24,6 +24,8 @@ export class TodoListComponent implements OnInit {
     id: new FormControl(''),
     status: new FormControl(''),
   });
+
+  @ViewChild('createInput') createInput: ElementRef;
 
   constructor(private todoService: TodoService) {
   }
@@ -64,5 +66,9 @@ export class TodoListComponent implements OnInit {
 
   onSave() {
     this.todoService.updateTodo(this.form.value).subscribe(() => this.loadData());
+  }
+
+  ngAfterViewInit(): void {
+    this.createInput.nativeElement.focus();
   }
 }
