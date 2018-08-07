@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../services/todo.service';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {TodoService} from '../services/todo.service';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {Status} from 'tslint/lib/runner';
+import {STATUS} from '../constants/status';
+
+export interface ITodo {
+  id: number;
+  content: string;
+  status: string;
+}
 
 @Component({
   selector: 'app-todo-list',
@@ -9,16 +17,17 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/f
 })
 export class TodoListComponent implements OnInit {
   newTodo: string;
-  todoList: Array<string> = [];
-  finishedTodos: Array<string> = [];
-  currentIndex;
+  todoList: Array<ITodo> = [];
+  finishedTodos: Array<ITodo> = [];
 
-  title: FormControl = new FormControl('', this.forbiddenNullValidator());
   form: FormGroup = new FormGroup({
-    title: this.title,
+    content: new FormControl('', this.forbiddenNullValidator()),
+    id: new FormControl(''),
+    status: new FormControl(''),
   });
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -26,7 +35,10 @@ export class TodoListComponent implements OnInit {
 
   loadData() {
     this.todoService.getTodoList()
-      .subscribe((data: Array<string>) => this.todoList = data );
+      .subscribe((data: Array<ITodo>) => {
+        this.todoList = data.filter(todo => todo.status === STATUS.todo);
+        this.finishedTodos = data.filter(todo => todo.status === STATUS.done);
+      });
   }
 
   handleCreateTodoItem() {
@@ -36,26 +48,22 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  editTodo(index) {
-    this.title.setValue(this.todoList[index]);
-    this.currentIndex = index;
+  editTodo(todo) {
+    this.form.patchValue(todo);
   }
 
-  finishTodoItem(index) {
-    this.finishedTodos.push(this.todoList[index]);
-    this.todoList.splice(index, 1);
+  finishTodoItem(todo) {
+    this.todoService.markAsDone(todo.id).subscribe(() => this.loadData());
   }
 
   forbiddenNullValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const forbidden = control.value === '';
-      return forbidden ? { isEmpty : true } : null;
+      return forbidden ? {isEmpty: true} : null;
     };
   }
 
   onSave() {
-    this.todoService.updateTodo(this.currentIndex, this.form.value).subscribe(() => {
-      this.loadData();
-    });
+    this.todoService.updateTodo(this.form.value).subscribe(() => this.loadData());
   }
 }

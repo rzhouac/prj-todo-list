@@ -1,30 +1,32 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {of} from 'rxjs';
+import {STATUS} from '../constants/status';
 
 @Injectable()
 export class TodoService {
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'my-auth-token'
-    })
-  };
-
-  constructor(private http: HttpClient) {
-  }
+  todoList = [
+    {content: '123', status: STATUS.todo, id: 1},
+    {content: '456', status: STATUS.todo, id: 2},
+    {content: '789', status: STATUS.todo, id: 3},
+    {content: '1000', status: STATUS.todo, id: 4},
+  ];
 
   getTodoList() {
-    return this.http.get('/api/todo-list');
+    return of(this.todoList);
   }
 
-  addTodo(todo) {
-    return this.http.post('/api/todo-list/add', JSON.stringify({ title: todo }), this.httpOptions);
+  addTodo(content) {
+    this.todoList[this.todoList.length] = {content, status: STATUS.todo, id: Date.now()};
+    return of(this.todoList);
   }
 
-  updateTodo(index, formValue) {
-    return this.http.put('/api/todo-list/update', JSON.stringify({
-      index,
-      ...formValue,
-    }), this.httpOptions);
+  updateTodo(updatingTodo) {
+    this.todoList = this.todoList.map(todo => (todo.id === updatingTodo.id ? updatingTodo : todo));
+    return of(this.todoList);
+  }
+
+  markAsDone(id) {
+    this.todoList = this.todoList.map(todo => (todo.id === id ? {...todo, status: STATUS.done} : todo));
+    return of(this.todoList);
   }
 }

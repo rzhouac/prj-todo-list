@@ -10,9 +10,9 @@
   <div class="card todo-list border-primary">
     <div class="card-header bg-primary text-white">Todo List</div>
     <div class="card-body text-primary">
-      <div *ngFor="let todo of todoList; let index = index" class="todo-item">
-        <i class="fa fa-circle-thin" (click)="finishTodoItem(index)"></i>
-        <span data-toggle="modal" data-target="#myModal" (click)="editTodo(index)">{{ todo }}</span>
+      <div *ngFor="let todo of todoList" class="todo-item">
+        <i class="fa fa-circle-thin" (click)="finishTodoItem(todo)"></i>
+        <span data-toggle="modal" data-target="#myModal" (click)="editTodo(todo)">{{ todo.content }}</span>
       </div>
     </div>
   </div>
@@ -21,14 +21,14 @@
     <div class="card-body text-success">
       <div *ngFor="let todo of finishedTodos;" class="todo-item">
         <i class="fa fa-check-circle"></i>
-        <span>{{ todo }}</span>
+        <span>{{ todo.content }}</span>
       </div>
     </div>
   </div>
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" [formGroup]="form">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">编辑</h5>
@@ -37,7 +37,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <input type="text" class="form-control" [formControl]="title">
+        <input type="text" class="form-control" formControlName="content">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
