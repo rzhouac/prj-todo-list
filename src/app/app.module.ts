@@ -22,7 +22,7 @@ const appRoutes: Routes = [
     AppComponent,
     TodoListComponent,
     StatisticsComponent,
-    TodoComponent
+    TodoComponent,
   ],
   imports: [
     BrowserModule,

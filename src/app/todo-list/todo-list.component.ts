@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TodoService} from '../services/todo.service';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {Status} from 'tslint/lib/runner';
 import {STATUS} from '../constants/status';
 
 export interface ITodo {

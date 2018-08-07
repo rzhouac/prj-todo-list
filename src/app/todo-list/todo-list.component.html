@@ -19,10 +19,7 @@
   <div class="card todo-list border-success">
     <div class="card-header bg-success text-white">Finished List</div>
     <div class="card-body text-success">
-      <div *ngFor="let todo of finishedTodos;" class="todo-item">
-        <i class="fa fa-check-circle"></i>
-        <span>{{ todo.content }}</span>
-      </div>
+      <app-todo *ngFor="let todo of finishedTodos" [todo]="todo"></app-todo>
     </div>
   </div>
 </div>
