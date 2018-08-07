@@ -18,13 +18,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   newTodo: string;
   todoList: Array<ITodo> = [];
   finishedTodos: Array<ITodo> = [];
-
-  form: FormGroup = new FormGroup({
-    content: new FormControl('', this.forbiddenNullValidator()),
-    id: new FormControl(''),
-    status: new FormControl(''),
-  });
-
+  editingData = {};
   @ViewChild('createInput') createInput: ElementRef;
 
   constructor(private todoService: TodoService) {
@@ -50,22 +44,15 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   editTodo(todo) {
-    this.form.patchValue(todo);
+    this.editingData = todo;
   }
 
   finishTodoItem(todo) {
     this.todoService.markAsDone(todo.id).subscribe(() => this.loadData());
   }
 
-  forbiddenNullValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const forbidden = control.value === '';
-      return forbidden ? {isEmpty: true} : null;
-    };
-  }
-
-  onSave() {
-    this.todoService.updateTodo(this.form.value).subscribe(() => this.loadData());
+  onSave(savingData) {
+    this.todoService.updateTodo(savingData).subscribe(() => this.loadData());
   }
 
   ngAfterViewInit(): void {
