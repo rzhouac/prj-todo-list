@@ -4,6 +4,9 @@ import {STATUS} from '../constants/status';
 
 @Injectable()
 export class TodoService {
+
+  num = 0;
+
   todoList = [
     {content: '123', status: STATUS.todo, id: 1},
     {content: '456', status: STATUS.todo, id: 2},
@@ -13,6 +16,10 @@ export class TodoService {
 
   getTodoList() {
     return of(this.todoList);
+  }
+
+  getNumber(content) {
+    console.log(content, this.num++);
   }
 
   addTodo(content) {

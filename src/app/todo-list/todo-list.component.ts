@@ -1,7 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TodoService} from '../services/todo.service';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {Status} from 'tslint/lib/runner';
 import {STATUS} from '../constants/status';
 
 export interface ITodo {
@@ -15,16 +13,12 @@ export interface ITodo {
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss']
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, AfterViewInit {
   newTodo: string;
   todoList: Array<ITodo> = [];
   finishedTodos: Array<ITodo> = [];
-
-  form: FormGroup = new FormGroup({
-    content: new FormControl('', this.forbiddenNullValidator()),
-    id: new FormControl(''),
-    status: new FormControl(''),
-  });
+  editingData = {};
+  @ViewChild('createInput') createInput: ElementRef;
 
   constructor(private todoService: TodoService) {
   }
@@ -49,21 +43,18 @@ export class TodoListComponent implements OnInit {
   }
 
   editTodo(todo) {
-    this.form.patchValue(todo);
+    this.editingData = todo;
   }
 
   finishTodoItem(todo) {
     this.todoService.markAsDone(todo.id).subscribe(() => this.loadData());
   }
 
-  forbiddenNullValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const forbidden = control.value === '';
-      return forbidden ? {isEmpty: true} : null;
-    };
+  onSave(savingData) {
+    this.todoService.updateTodo(savingData).subscribe(() => this.loadData());
   }
 
-  onSave() {
-    this.todoService.updateTodo(this.form.value).subscribe(() => this.loadData());
+  ngAfterViewInit(): void {
+    this.createInput.nativeElement.focus();
   }
 }

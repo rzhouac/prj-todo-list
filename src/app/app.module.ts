@@ -8,6 +8,8 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TodoService } from './services/todo.service';
+import { TodoComponent } from './todo/todo.component';
+import { EditModalComponent } from './edit-modal/edit-modal.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'todo-list', pathMatch: 'full'},
@@ -21,6 +23,8 @@ const appRoutes: Routes = [
     AppComponent,
     TodoListComponent,
     StatisticsComponent,
+    TodoComponent,
+    EditModalComponent,
   ],
   imports: [
     BrowserModule,
