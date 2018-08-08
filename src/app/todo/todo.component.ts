@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ITodo} from '../todo-list/todo-list.component';
+import {TodoService} from '../services/todo.service';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css']
+  styleUrls: ['./todo.component.css'],
+  providers: [TodoService]
 })
 export class TodoComponent implements OnInit {
 
@@ -14,10 +16,11 @@ export class TodoComponent implements OnInit {
   @Output() editTodo = new EventEmitter();
   @Output() updateStatus = new EventEmitter();
 
-  constructor() {
+  constructor(private todoService: TodoService) {
   }
 
   ngOnInit() {
+    this.todoService.getNumber(this.todo.content);
   }
 
   update() {
